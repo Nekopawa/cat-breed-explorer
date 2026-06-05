@@ -5,6 +5,7 @@ export const INITIAL_STATE = {
     error: null,
     selectedPage: "explore",
     favorites: [],
+    selectedBreed: null,
 };
 
 export const ACTION_TYPES = {
@@ -14,6 +15,7 @@ export const ACTION_TYPES = {
     TOGGLE_FAVORITE: "TOGGLE_FAVORITE",
     INPUT_SEARCH: "INPUT_SEARCH",
     CHANGE_PAGE: "CHANGE_PAGE",
+    OPEN_DETAILS: "OPEN_DETAILS",
 };
 
 export function init(initialState) {
@@ -91,6 +93,13 @@ export function reducer(state, action) {
             return {
                 ...state,
                 selectedPage: action.page,
+            };
+        }
+        case ACTION_TYPES.OPEN_DETAILS: {
+            return {
+                ...state,
+                selectedPage: "details",
+                selectedBreed: action.payload,
             };
         }
         default: {

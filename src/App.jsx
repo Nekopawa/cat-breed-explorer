@@ -10,6 +10,7 @@ import {
     reducer,
 } from "./reducer/breedsReducer";
 import FavoritesList from "./components/FavoritesList";
+import BreedDetails from "./components/BreedDetails";
 
 function App() {
     const [state, dispatch] = useReducer(reducer, INITIAL_STATE, init);
@@ -25,6 +26,11 @@ function App() {
 
     function handleChangePage(page) {
         dispatch({ type: ACTION_TYPES.CHANGE_PAGE, page: page });
+    }
+
+    function handleOpenDetails(breedId) {
+        const breed = state.breeds.find((breed) => breed.id === breedId);
+        dispatch({ type: ACTION_TYPES.OPEN_DETAILS, payload: breed });
     }
 
     useEffect(() => {
@@ -75,6 +81,7 @@ function App() {
     return (
         <>
             <Header page={state.selectedPage} />
+
             {state.selectedPage === "explore" ? (
                 <BreedList
                     breeds={state.filteredBreeds}
@@ -83,19 +90,29 @@ function App() {
                     favorites={state.favorites}
                     onToggleFavorite={handleToggleFavorite}
                     onSearch={handleSearch}
+                    onOpenDetails={handleOpenDetails}
                 />
             ) : state.selectedPage === "favorites" ? (
                 <FavoritesList
                     favorites={state.favorites}
                     onToggleFavorite={handleToggleFavorite}
                 />
+            ) : state.selectedPage === "details" ? (
+                <BreedDetails
+                    breed={state.selectedBreed}
+                    favorites={state.favorites}
+                    onToggleFavorite={handleToggleFavorite}
+                />
             ) : (
                 <p>More...</p>
             )}
-            <Navbar
-                onChangePage={handleChangePage}
-                selectedPage={state.selectedPage}
-            />
+
+            {state.selectedPage !== "details" && (
+                <Navbar
+                    onChangePage={handleChangePage}
+                    selectedPage={state.selectedPage}
+                />
+            )}
         </>
     );
 }

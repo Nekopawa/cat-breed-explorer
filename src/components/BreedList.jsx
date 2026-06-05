@@ -9,6 +9,7 @@ export default function BreedList({
     favorites,
     onToggleFavorite,
     onSearch,
+    onOpenDetails,
 }) {
     return (
         <main id="breed-list">
@@ -31,6 +32,7 @@ export default function BreedList({
                                 breed={breed}
                                 favorites={favorites}
                                 onToggleFavorite={onToggleFavorite}
+                                onOpenDetails={onOpenDetails}
                             />
                         );
                     })}

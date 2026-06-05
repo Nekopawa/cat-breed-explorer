@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import "../styles/breedCard.css";
 
-export default function BreedCard({ breed, favorites, onToggleFavorite }) {
+export default function BreedCard({
+    breed,
+    favorites,
+    onToggleFavorite,
+    onOpenDetails,
+}) {
     const [imageUrl, setImageUrl] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -41,7 +46,7 @@ export default function BreedCard({ breed, favorites, onToggleFavorite }) {
     }, [image]);
 
     return (
-        <div className="breed__card">
+        <div className="breed__card" onClick={() => onOpenDetails(id)}>
             {error ? (
                 <p className="breed__image-message">{error}</p>
             ) : loading || !imageUrl ? (
