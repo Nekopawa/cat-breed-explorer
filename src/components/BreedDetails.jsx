@@ -1,6 +1,11 @@
 import "../styles/breedDetails.css";
 
-export default function BreedDetails({ breed, favorites, onToggleFavorite }) {
+export default function BreedDetails({
+    breed,
+    favorites,
+    onToggleFavorite,
+    onCloseDetails,
+}) {
     const {
         id,
         name,
@@ -35,9 +40,11 @@ export default function BreedDetails({ breed, favorites, onToggleFavorite }) {
                 ></img>
             </picture>
 
-            <picture id="details__back-button">
-                <img src="./icons/arrow_back.svg"></img>
-            </picture>
+            <button onClick={onCloseDetails}>
+                <picture id="details__back-button">
+                    <img src="./icons/arrow_back.svg"></img>
+                </picture>
+            </button>
 
             <picture id="details__favorite-icon">
                 {isFavorite ? (

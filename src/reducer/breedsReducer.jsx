@@ -6,6 +6,7 @@ export const INITIAL_STATE = {
     selectedPage: "explore",
     favorites: [],
     selectedBreed: null,
+    previousPage: null,
 };
 
 export const ACTION_TYPES = {
@@ -16,6 +17,7 @@ export const ACTION_TYPES = {
     INPUT_SEARCH: "INPUT_SEARCH",
     CHANGE_PAGE: "CHANGE_PAGE",
     OPEN_DETAILS: "OPEN_DETAILS",
+    CLOSE_DETAILS: "CLOSE_DETAILS",
 };
 
 export function init(initialState) {
@@ -98,8 +100,15 @@ export function reducer(state, action) {
         case ACTION_TYPES.OPEN_DETAILS: {
             return {
                 ...state,
+                previousPage: state.selectedPage,
                 selectedPage: "details",
                 selectedBreed: action.payload,
+            };
+        }
+        case ACTION_TYPES.CLOSE_DETAILS: {
+            return {
+                ...state,
+                selectedPage: state.previousPage,
             };
         }
         default: {

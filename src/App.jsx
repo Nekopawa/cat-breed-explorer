@@ -33,6 +33,10 @@ function App() {
         dispatch({ type: ACTION_TYPES.OPEN_DETAILS, payload: breed });
     }
 
+    function handleCloseDetails() {
+        dispatch({ type: ACTION_TYPES.CLOSE_DETAILS });
+    }
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -96,12 +100,14 @@ function App() {
                 <FavoritesList
                     favorites={state.favorites}
                     onToggleFavorite={handleToggleFavorite}
+                    onOpenDetails={handleOpenDetails}
                 />
             ) : state.selectedPage === "details" ? (
                 <BreedDetails
                     breed={state.selectedBreed}
                     favorites={state.favorites}
                     onToggleFavorite={handleToggleFavorite}
+                    onCloseDetails={handleCloseDetails}
                 />
             ) : (
                 <p>More...</p>

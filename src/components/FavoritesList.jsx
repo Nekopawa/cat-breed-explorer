@@ -2,7 +2,11 @@ import "../styles/favoritesList.css";
 
 import BreedCard from "./BreedCard";
 
-export default function FavoritesList({ favorites, onToggleFavorite }) {
+export default function FavoritesList({
+    favorites,
+    onToggleFavorite,
+    onOpenDetails,
+}) {
     return (
         <section id="favorites-list">
             {favorites.length === 0 ? (
@@ -22,6 +26,7 @@ export default function FavoritesList({ favorites, onToggleFavorite }) {
                                     breed={breed}
                                     favorites={favorites}
                                     onToggleFavorite={onToggleFavorite}
+                                    onOpenDetails={onOpenDetails}
                                 />
                             );
                         })}
