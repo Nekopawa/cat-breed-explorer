@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import "./App.css";
 import BreedList from "./components/BreedList";
 import Header from "./components/Header";
@@ -14,6 +14,7 @@ import BreedDetails from "./components/BreedDetails";
 
 function App() {
     const [state, dispatch] = useReducer(reducer, INITIAL_STATE, init);
+    const previousScrollY = useRef(0);
 
     function handleSearch(searchValue) {
         dispatch({ type: ACTION_TYPES.INPUT_SEARCH, input: searchValue });
@@ -29,12 +30,19 @@ function App() {
     }
 
     function handleOpenDetails(breedId) {
+        previousScrollY.current = window.scrollY;
+
         const breed = state.breeds.find((breed) => breed.id === breedId);
         dispatch({ type: ACTION_TYPES.OPEN_DETAILS, payload: breed });
     }
 
     function handleCloseDetails() {
         dispatch({ type: ACTION_TYPES.CLOSE_DETAILS });
+
+        //render previous page first, then restores the scroll Y
+        setTimeout(() => {
+            window.scrollTo(0, previousScrollY.current);
+        }, 0);
     }
 
     useEffect(() => {
@@ -81,6 +89,13 @@ function App() {
 
         fetchData();
     }, []);
+
+    useEffect(() => {
+        if (state.selectedPage === "details") {
+            //puts the scroll at the top of the page
+            window.scrollTo(0, 0);
+        }
+    }, [state.selectedPage]);
 
     return (
         <>
