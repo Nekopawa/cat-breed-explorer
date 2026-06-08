@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "../styles/breedCard.css";
 
 export default function BreedCard({
@@ -7,11 +6,7 @@ export default function BreedCard({
     onToggleFavorite,
     onOpenDetails,
 }) {
-    const [imageUrl, setImageUrl] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    const { id, name, temperament, origin, lifeSpan, image } = breed;
+    const { id, name, temperament, origin, lifeSpan } = breed;
     const temperamentSplit = temperament.split(", ", 3);
 
     const isFavorite = favorites.find((breed) => breed.id === id);
@@ -22,46 +17,11 @@ export default function BreedCard({
         onToggleFavorite(id);
     }
 
-    useEffect(() => {
-        async function getImageUrl() {
-            try {
-                setLoading(true);
-                setError(null);
-
-                if (!image) {
-                    throw Error("Could not fetch image.");
-                }
-                const response = await fetch(
-                    `https://api.thecatapi.com/v1/images/${image}`,
-                );
-
-                if (!response.ok) {
-                    throw Error("Could not fetch image.");
-                }
-
-                const data = await response.json();
-                setImageUrl(data.url);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        getImageUrl();
-    }, [image]);
-
     return (
         <div className="breed__card" onClick={() => onOpenDetails(id)}>
-            {error ? (
-                <p className="breed__image-message">{error}</p>
-            ) : loading || !imageUrl ? (
-                <p className="breed__image-message">Loading...</p>
-            ) : (
-                <picture className="breed__image">
-                    <img src={imageUrl}></img>
-                </picture>
-            )}
+            <picture className="breed__image">
+                <img src={`./breeds/${id}.webp`} alt={`${name} photo`}></img>
+            </picture>
 
             <div className="breed__information">
                 <h2>{name}</h2>

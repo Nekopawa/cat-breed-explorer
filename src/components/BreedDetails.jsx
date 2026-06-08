@@ -34,10 +34,7 @@ export default function BreedDetails({
     return (
         <section id="breed-detail__container">
             <picture id="details__image">
-                <img
-                    src="https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg"
-                    alt="Cat photo"
-                ></img>
+                <img src={`./breeds/${id}.webp`} alt={`${name} photo`}></img>
             </picture>
 
             <button onClick={onCloseDetails}>
