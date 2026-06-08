@@ -91,10 +91,8 @@ function App() {
     }, []);
 
     useEffect(() => {
-        if (state.selectedPage === "details") {
-            //puts the scroll at the top of the page
-            window.scrollTo(0, 0);
-        }
+        //puts the scroll at the top of the page
+        window.scrollTo(0, 0);
     }, [state.selectedPage]);
 
     return (
