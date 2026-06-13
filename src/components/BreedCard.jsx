@@ -30,7 +30,7 @@ export default function BreedCard({
 
                 <div className="information__origin">
                     <picture>
-                        <img src="./icons/world.svg" alt="Word icon"></img>
+                        <img src="./icons/world.svg" alt="World icon"></img>
                     </picture>
                     <p>{origin}</p>
                 </div>

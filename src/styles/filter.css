@@ -1,14 +1,19 @@
 #filter__bar {
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     justify-content: center;
+    align-items: center;
     gap: 16px;
     margin: 16px 0;
 }
 
+/* search bar */
 #filter__input-wrapper {
     position: relative;
+    width: 90%;
+    display: flex;
+    justify-content: center;
 }
 
 #filter__input-wrapper::before {
@@ -24,7 +29,7 @@
 }
 
 #filter__input {
-    width: 260px;
+    width: 100%;
     height: 40px;
     border: solid 1px var(--border);
     border-radius: 10px;
@@ -39,12 +44,120 @@
     outline: none;
 }
 
-#filter__button {
-    background-color: white;
+.filter__button {
+    width: 43%;
+    height: 40px;
+    background-color: var(--light-purple-background);
     border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-accent);
+    font-weight: 600;
+}
+
+.filter__button:active {
+    background-color: var(--border);
+}
+
+#filter__options {
+    width: 100%;
+    padding: 25px;
+    background-color: white;
+    border-radius: 20px;
+}
+
+/* header */
+#filter__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#filter__header h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+#filter__close-button {
+    background-color: inherit;
+    border: 0;
+}
+
+#filter__reset-button {
+    background-color: inherit;
+    color: var(--primary-accent);
+    border: 0;
+    font-weight: 600;
+}
+
+/* options */
+#filter__options h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 10px 3px;
+}
+
+#filter__options ul {
+    list-style-type: none;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 12px;
+    color: var(--primary-accent);
+}
+
+#filter__options li {
+    height: 30px;
+    min-width: 60px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
     border-radius: 10px;
 }
 
-#filter__button:active {
-    background-color: var(--border);
+#filter__options .selected {
+    background-color: var(--primary-accent);
+    color: var(--lighter-accent);
+}
+
+#options__origin select {
+    height: 30px;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 5px;
+}
+
+#weight__wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+#weight__wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#weight__wrapper input[type="range"] {
+    width: 70%;
+}
+
+#filter__apply-button {
+    height: 40px;
+    width: 100%;
+    background-color: var(--primary-accent);
+    color: var(--lighter-accent);
+    border: 0;
+    border-radius: 10px;
+    font-size: 1rem;
 }
