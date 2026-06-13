@@ -1,12 +1,28 @@
 import { useState } from "react";
 import "../styles/filter.css";
 
-export default function Filter({ onSearch }) {
+export default function Filter({
+    onSearch,
+    temperamentList,
+    originList,
+    filters,
+    onChangeFilter,
+}) {
     const [filterIsOpen, setFilterIsOpen] = useState(false);
     const [sortIsOpen, setSortIsOpen] = useState(false);
 
     function handleChangeInput(event) {
         onSearch(event.target.value);
+    }
+
+    function handleToggleTemperament(temperament) {
+        const isSelected = filters.temperaments?.includes(temperament);
+
+        const newTemperaments = isSelected
+            ? filters.temperaments.filter((item) => item !== temperament)
+            : [...filters.temperaments, temperament];
+
+        onChangeFilter("temperaments", newTemperaments);
     }
 
     return (
@@ -22,7 +38,7 @@ export default function Filter({ onSearch }) {
 
             <button
                 className="filter__button"
-                onClick={() => setFilterIsOpen(true)}
+                onClick={() => setFilterIsOpen(!filterIsOpen)}
             >
                 <picture>
                     <img src="/icons/filter.svg"></img>
@@ -58,11 +74,23 @@ export default function Filter({ onSearch }) {
                     <div id="options__temperament">
                         <h3>Temperament</h3>
                         <ul>
-                            <li>Active</li>
-                            <li>Affectionate</li>
-                            <li>Independent</li>
-                            <li>Gentle</li>
-                            <li>Playful</li>
+                            {temperamentList.map((temperament) => (
+                                <li
+                                    key={temperament}
+                                    className={
+                                        filters.temperaments?.includes(
+                                            temperament,
+                                        )
+                                            ? "selected"
+                                            : ""
+                                    }
+                                    onClick={() =>
+                                        handleToggleTemperament(temperament)
+                                    }
+                                >
+                                    {temperament}
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
@@ -94,9 +122,9 @@ export default function Filter({ onSearch }) {
                         <h3>Origin</h3>
                         <select>
                             <option>All Origins</option>
-                            <option>Egypt</option>
-                            <option>Malasya</option>
-                            <option>United States</option>
+                            {originList.map((origin) => (
+                                <option key={origin}>{origin}</option>
+                            ))}
                         </select>
                     </div>
 

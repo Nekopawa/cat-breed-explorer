@@ -7,13 +7,23 @@ export default function BreedList({
     loading,
     error,
     favorites,
+    temperamentList,
+    originList,
+    filters,
     onToggleFavorite,
     onSearch,
     onOpenDetails,
+    onChangeFilter,
 }) {
     return (
         <main id="breed-list">
-            <Filter onSearch={onSearch} />
+            <Filter
+                onSearch={onSearch}
+                temperamentList={temperamentList}
+                originList={originList}
+                filters={filters}
+                onChangeFilter={onChangeFilter}
+            />
 
             <p id="list__info">
                 <span id="list__count">{breeds.length}</span> breeds found

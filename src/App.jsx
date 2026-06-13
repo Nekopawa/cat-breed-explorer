@@ -4,40 +4,78 @@ import BreedList from "./components/BreedList";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import {
-    ACTION_TYPES,
+    APP_ACTION_TYPES,
     init,
     INITIAL_STATE,
     reducer,
 } from "./reducer/breedsReducer";
 import FavoritesList from "./components/FavoritesList";
 import BreedDetails from "./components/BreedDetails";
+import {
+    FILTER_ACTION_TYPES,
+    FILTER_INITIAL_STATE,
+    filterReducer,
+} from "./reducer/filterReducer";
 
 function App() {
-    const [state, dispatch] = useReducer(reducer, INITIAL_STATE, init);
+    const [appState, appDispatch] = useReducer(reducer, INITIAL_STATE, init);
+    const [filterState, filterDispatch] = useReducer(
+        filterReducer,
+        FILTER_INITIAL_STATE,
+    );
     const previousScrollY = useRef(0);
 
+    //gets all unique temperaments
+    const temperamentList = [
+        ...new Set(
+            appState.breeds.flatMap(
+                (breed) =>
+                    breed.temperament
+                        ?.split(",")
+                        .map((temperament) =>
+                            temperament.toLowerCase().trim(),
+                        ) ?? [],
+            ),
+        ),
+    ].sort();
+
+    //gets all unique origins
+    const originList = [
+        ...new Set(
+            appState.breeds.map((breed) =>
+                breed.origin?.toLowerCase().trim(),
+            ) ?? [],
+        ),
+    ].sort();
+
     function handleSearch(searchValue) {
-        dispatch({ type: ACTION_TYPES.INPUT_SEARCH, input: searchValue });
+        appDispatch({
+            type: APP_ACTION_TYPES.INPUT_SEARCH,
+            input: searchValue,
+        });
     }
 
     function handleToggleFavorite(breedId) {
-        const favorite = state.breeds.find((breed) => breed.id === breedId);
-        dispatch({ type: ACTION_TYPES.TOGGLE_FAVORITE, payload: favorite });
+        const favorite = appState.breeds.find((breed) => breed.id === breedId);
+        appDispatch({
+            type: APP_ACTION_TYPES.TOGGLE_FAVORITE,
+            payload: favorite,
+        });
     }
 
     function handleChangePage(page) {
-        dispatch({ type: ACTION_TYPES.CHANGE_PAGE, page: page });
+        appDispatch({ type: APP_ACTION_TYPES.CHANGE_PAGE, page: page });
     }
 
     function handleOpenDetails(breedId) {
         previousScrollY.current = window.scrollY;
 
-        const breed = state.breeds.find((breed) => breed.id === breedId);
-        dispatch({ type: ACTION_TYPES.OPEN_DETAILS, payload: breed });
+        const breed = appState.breeds.find((breed) => breed.id === breedId);
+        appDispatch({ type: APP_ACTION_TYPES.OPEN_DETAILS, payload: breed });
     }
 
     function handleCloseDetails() {
-        dispatch({ type: ACTION_TYPES.CLOSE_DETAILS });
+        appDispatch({ type: APP_ACTION_TYPES.CLOSE_DETAILS });
 
         //render previous page first, then restores the scroll Y
         setTimeout(() => {
@@ -45,10 +83,17 @@ function App() {
         }, 0);
     }
 
+    function handleChangeFilter(key, value) {
+        filterDispatch({
+            type: FILTER_ACTION_TYPES.UPDATE_FILTER,
+            payload: { key, value },
+        });
+    }
+
     useEffect(() => {
         async function fetchData() {
             try {
-                dispatch({ type: ACTION_TYPES.SEARCH_START });
+                appDispatch({ type: APP_ACTION_TYPES.SEARCH_START });
 
                 const response = await fetch(
                     "https://api.thecatapi.com/v1/breeds",
@@ -75,13 +120,13 @@ function App() {
                     };
                 });
 
-                dispatch({
-                    type: ACTION_TYPES.SEARCH_SUCCESS,
+                appDispatch({
+                    type: APP_ACTION_TYPES.SEARCH_SUCCESS,
                     payload: breeds,
                 });
             } catch (error) {
-                dispatch({
-                    type: ACTION_TYPES.SEARCH_ERROR,
+                appDispatch({
+                    type: APP_ACTION_TYPES.SEARCH_ERROR,
                     error: error.message,
                 });
             }
@@ -93,32 +138,36 @@ function App() {
     useEffect(() => {
         //puts the scroll at the top of the page
         window.scrollTo(0, 0);
-    }, [state.selectedPage]);
+    }, [appState.selectedPage]);
 
     return (
         <>
-            <Header page={state.selectedPage} />
+            <Header page={appState.selectedPage} />
 
-            {state.selectedPage === "explore" ? (
+            {appState.selectedPage === "explore" ? (
                 <BreedList
-                    breeds={state.filteredBreeds}
-                    loading={state.loading}
-                    error={state.error}
-                    favorites={state.favorites}
+                    breeds={appState.filteredBreeds}
+                    loading={appState.loading}
+                    error={appState.error}
+                    favorites={appState.favorites}
+                    temperamentList={temperamentList}
+                    originList={originList}
+                    filters={filterState}
                     onToggleFavorite={handleToggleFavorite}
                     onSearch={handleSearch}
                     onOpenDetails={handleOpenDetails}
+                    onChangeFilter={handleChangeFilter}
                 />
-            ) : state.selectedPage === "favorites" ? (
+            ) : appState.selectedPage === "favorites" ? (
                 <FavoritesList
-                    favorites={state.favorites}
+                    favorites={appState.favorites}
                     onToggleFavorite={handleToggleFavorite}
                     onOpenDetails={handleOpenDetails}
                 />
-            ) : state.selectedPage === "details" ? (
+            ) : appState.selectedPage === "details" ? (
                 <BreedDetails
-                    breed={state.selectedBreed}
-                    favorites={state.favorites}
+                    breed={appState.selectedBreed}
+                    favorites={appState.favorites}
                     onToggleFavorite={handleToggleFavorite}
                     onCloseDetails={handleCloseDetails}
                 />
@@ -126,10 +175,10 @@ function App() {
                 <p>More...</p>
             )}
 
-            {state.selectedPage !== "details" && (
+            {appState.selectedPage !== "details" && (
                 <Navbar
                     onChangePage={handleChangePage}
-                    selectedPage={state.selectedPage}
+                    selectedPage={appState.selectedPage}
                 />
             )}
         </>

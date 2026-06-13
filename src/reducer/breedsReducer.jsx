@@ -9,7 +9,7 @@ export const INITIAL_STATE = {
     previousPage: null,
 };
 
-export const ACTION_TYPES = {
+export const APP_ACTION_TYPES = {
     SEARCH_START: "SEARCH_START",
     SEARCH_ERROR: "SEARCH_ERROR",
     SEARCH_SUCCESS: "SEARCH_SUCCESS",
@@ -37,21 +37,21 @@ export function init(initialState) {
 
 export function reducer(state, action) {
     switch (action.type) {
-        case ACTION_TYPES.SEARCH_START: {
+        case APP_ACTION_TYPES.SEARCH_START: {
             return {
                 ...state,
                 loading: true,
                 error: null,
             };
         }
-        case ACTION_TYPES.SEARCH_ERROR: {
+        case APP_ACTION_TYPES.SEARCH_ERROR: {
             return {
                 ...state,
                 loading: false,
                 error: action.error,
             };
         }
-        case ACTION_TYPES.SEARCH_SUCCESS: {
+        case APP_ACTION_TYPES.SEARCH_SUCCESS: {
             return {
                 ...state,
                 loading: false,
@@ -60,7 +60,7 @@ export function reducer(state, action) {
                 filteredBreeds: action.payload,
             };
         }
-        case ACTION_TYPES.TOGGLE_FAVORITE: {
+        case APP_ACTION_TYPES.TOGGLE_FAVORITE: {
             const favorite = action.payload;
             const favoriteExists = state.favorites.find(
                 (breed) => breed.id === favorite.id,
@@ -81,7 +81,7 @@ export function reducer(state, action) {
                 favorites: newFavorites,
             };
         }
-        case ACTION_TYPES.INPUT_SEARCH: {
+        case APP_ACTION_TYPES.INPUT_SEARCH: {
             const filtered = state.breeds.filter((breed) =>
                 breed.name.toLowerCase().includes(action.input.toLowerCase()),
             );
@@ -91,13 +91,13 @@ export function reducer(state, action) {
                 filteredBreeds: filtered,
             };
         }
-        case ACTION_TYPES.CHANGE_PAGE: {
+        case APP_ACTION_TYPES.CHANGE_PAGE: {
             return {
                 ...state,
                 selectedPage: action.page,
             };
         }
-        case ACTION_TYPES.OPEN_DETAILS: {
+        case APP_ACTION_TYPES.OPEN_DETAILS: {
             return {
                 ...state,
                 previousPage: state.selectedPage,
@@ -105,7 +105,7 @@ export function reducer(state, action) {
                 selectedBreed: action.payload,
             };
         }
-        case ACTION_TYPES.CLOSE_DETAILS: {
+        case APP_ACTION_TYPES.CLOSE_DETAILS: {
             return {
                 ...state,
                 selectedPage: state.previousPage,
