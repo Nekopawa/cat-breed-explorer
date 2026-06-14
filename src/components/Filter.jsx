@@ -168,8 +168,21 @@ export default function Filter({
                         </ul>
                     </div>
 
-                    <div>
+                    <div id="options__hypoallergenic">
                         <h3>Hypoallergenic</h3>
+                        <label className="hypoallergenic__toggle">
+                            <input
+                                type="checkbox"
+                                checked={filters.hypoallergenic}
+                                onChange={(event) =>
+                                    onChangeFilter(
+                                        "hypoallergenic",
+                                        event.target.checked,
+                                    )
+                                }
+                            ></input>
+                            <span className="hypoallergenic__toggle-slider"></span>
+                        </label>
                     </div>
 
                     <div id="options__origin">

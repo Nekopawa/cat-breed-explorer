@@ -98,7 +98,7 @@
 #filter__options h3 {
     font-size: 1rem;
     font-weight: 600;
-    margin: 10px 3px;
+    margin: 15px 3px 5px 3px;
 }
 
 #filter__options ul {
@@ -125,6 +125,54 @@
 #filter__options .selected {
     background-color: var(--primary-accent);
     color: var(--lighter-accent);
+}
+
+#options__hypoallergenic {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.hypoallergenic__toggle {
+    position: relative;
+    width: 50px;
+    height: 30px;
+    display: inline-block;
+}
+
+.hypoallergenic__toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.hypoallergenic__toggle-slider {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    background-color: #d7d9e0;
+    border-radius: 999px;
+    transition: background-color 0.3s ease;
+}
+
+.hypoallergenic__toggle-slider::before {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 3px;
+    top: 3px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.hypoallergenic__toggle input:checked + .hypoallergenic__toggle-slider {
+    background-color: var(--primary-accent);
+}
+
+.hypoallergenic__toggle input:checked + .hypoallergenic__toggle-slider::before {
+    transform: translateX(20px);
 }
 
 #options__origin select {
