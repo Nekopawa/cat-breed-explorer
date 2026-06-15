@@ -4,7 +4,7 @@ export const FILTER_INITIAL_STATE = {
     dogFriendly: ["any"],
     hypoallergenic: false,
     origin: null,
-    weight: [0, 99],
+    weight: [0, 10],
 };
 
 export const FILTER_ACTION_TYPES = {

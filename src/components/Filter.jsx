@@ -12,6 +12,9 @@ export default function Filter({
     const [filterIsOpen, setFilterIsOpen] = useState(false);
     const [sortIsOpen, setSortIsOpen] = useState(false);
 
+    const minWeight = filters.weight[0];
+    const maxWeight = filters.weight[1];
+
     function handleChangeInput(event) {
         onSearch(event.target.value);
     }
@@ -44,6 +47,18 @@ export default function Filter({
         }
 
         onChangeFilter(option, newOptions);
+    }
+
+    function handleChangeMinWeight(event) {
+        const newMin = Number(event.target.value);
+
+        onChangeFilter("weight", [Math.min(newMin, maxWeight), maxWeight]);
+    }
+
+    function handleChangeMaxWeight(event) {
+        const newMax = Number(event.target.value);
+
+        onChangeFilter("weight", [minWeight, Math.max(newMax, minWeight)]);
     }
 
     return (
@@ -213,14 +228,40 @@ export default function Filter({
                     <div id="options__weigth">
                         <h3>Weight (Metric)</h3>
                         <div id="weight__wrapper">
-                            <p>0kg</p>
-                            <input
-                                type="range"
-                                min="0"
-                                max="99"
-                                step="1"
-                            ></input>
-                            <p>10+ kg</p>
+                            <p>{minWeight} kg</p>
+                            <div className="range-slider">
+                                <div className="range-slider__track"></div>
+
+                                <div
+                                    className="range-slider__selected"
+                                    style={{
+                                        left: `${(minWeight / 10) * 100}%`,
+                                        right: `${100 - (maxWeight / 10) * 100}%`,
+                                    }}
+                                ></div>
+
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="10"
+                                    step="1"
+                                    value={minWeight}
+                                    onChange={handleChangeMinWeight}
+                                ></input>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="10"
+                                    step="1"
+                                    value={maxWeight}
+                                    onChange={handleChangeMaxWeight}
+                                ></input>
+                            </div>
+                            <p>
+                                {maxWeight === 10
+                                    ? `10+ kg`
+                                    : `${maxWeight} kg`}
+                            </p>
                         </div>
                     </div>
 
