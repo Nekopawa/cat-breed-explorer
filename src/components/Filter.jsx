@@ -7,6 +7,7 @@ export default function Filter({
     originList,
     filters,
     onChangeFilter,
+    onResetFilter,
 }) {
     const [filterIsOpen, setFilterIsOpen] = useState(false);
     const [sortIsOpen, setSortIsOpen] = useState(false);
@@ -88,7 +89,12 @@ export default function Filter({
                             </picture>
                         </button>
                         <h2>Filters</h2>
-                        <button id="filter__reset-button">Reset</button>
+                        <button
+                            id="filter__reset-button"
+                            onClick={onResetFilter}
+                        >
+                            Reset
+                        </button>
                     </div>
 
                     <div id="options__temperament">
@@ -195,7 +201,9 @@ export default function Filter({
                                 )
                             }
                         >
-                            <option value="">All Origins</option>
+                            <option value="" selected={!filters.origin}>
+                                All Origins
+                            </option>
                             {originList.map((origin) => (
                                 <option key={origin}>{origin}</option>
                             ))}

@@ -90,6 +90,10 @@ function App() {
         });
     }
 
+    function handleResetFilter() {
+        filterDispatch({ type: FILTER_ACTION_TYPES.RESET_FILTER });
+    }
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -157,6 +161,7 @@ function App() {
                     onSearch={handleSearch}
                     onOpenDetails={handleOpenDetails}
                     onChangeFilter={handleChangeFilter}
+                    onResetFilter={handleResetFilter}
                 />
             ) : appState.selectedPage === "favorites" ? (
                 <FavoritesList
