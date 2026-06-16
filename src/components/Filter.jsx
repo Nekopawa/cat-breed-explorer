@@ -68,14 +68,14 @@ export default function Filter({
                 onClick={() => setFilterIsOpen(!filterIsOpen)}
             >
                 <picture>
-                    <img src="/icons/filter.svg"></img>
+                    <img src="./icons/filter.svg"></img>
                 </picture>
                 <p>Filter</p>
             </button>
 
             <button className="filter__button">
                 <picture>
-                    <img src="/icons/sort.svg"></img>
+                    <img src="./icons/sort.svg"></img>
                 </picture>
                 <p>Sort</p>
             </button>
