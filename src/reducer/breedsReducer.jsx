@@ -14,7 +14,6 @@ export const APP_ACTION_TYPES = {
     SEARCH_ERROR: "SEARCH_ERROR",
     SEARCH_SUCCESS: "SEARCH_SUCCESS",
     TOGGLE_FAVORITE: "TOGGLE_FAVORITE",
-    INPUT_SEARCH: "INPUT_SEARCH",
     CHANGE_PAGE: "CHANGE_PAGE",
     OPEN_DETAILS: "OPEN_DETAILS",
     CLOSE_DETAILS: "CLOSE_DETAILS",
@@ -84,16 +83,6 @@ export function reducer(state, action) {
                 favorites: newFavorites,
             };
         }
-        case APP_ACTION_TYPES.INPUT_SEARCH: {
-            const filtered = state.breeds.filter((breed) =>
-                breed.name.toLowerCase().includes(action.input.toLowerCase()),
-            );
-
-            return {
-                ...state,
-                filteredBreeds: filtered,
-            };
-        }
         case APP_ACTION_TYPES.CHANGE_PAGE: {
             return {
                 ...state,
@@ -136,9 +125,17 @@ function filterBreeds(state, action) {
     const filters = action.payload;
     let filtered = state.breeds;
 
+    //text search
+    const search = filters.search.trim().toLowerCase();
+    if (filters.search.trim() !== "") {
+        filtered = filtered.filter((breed) =>
+            breed.name.toLowerCase().includes(search),
+        );
+    }
+
     //temperaments
     if (filters.temperaments.length > 0) {
-        filtered = state.breeds.filter((breed) => {
+        filtered = filtered.filter((breed) => {
             const breedTemperaments = breed.temperament
                 .split(",")
                 .map((temperament) => {
@@ -177,17 +174,14 @@ function filterBreeds(state, action) {
     }
 
     //weight
-    if (filters.weight[0] > 0 || filters.weight[1] < 10) {
-        filtered = filtered.filter((breed) => {
-            let breedWeight = breed.weight.split("-");
-            breedWeight = breedWeight.map((weigth) => weigth.trim());
-
-            return (
-                breedWeight[0] >= filters.weight[0] &&
-                breedWeight[1] <= filters.weight[1]
-            );
-        });
-    }
+    const maxWeight = filters.weight[1] < 10 ? filters.weight[1] : 99;
+    filtered = filtered.filter((breed) => {
+        let breedWeight = breed.weight.split("-");
+        breedWeight = breedWeight.map((weigth) => Number(weigth.trim()));
+        return (
+            breedWeight[0] <= maxWeight && breedWeight[1] >= filters.weight[0]
+        );
+    });
 
     return filtered;
 }

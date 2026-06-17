@@ -11,7 +11,6 @@ export default function BreedList({
     originList,
     filters,
     onToggleFavorite,
-    onSearch,
     onOpenDetails,
     onChangeFilter,
     onResetFilter,
@@ -20,7 +19,6 @@ export default function BreedList({
     return (
         <main id="breed-list">
             <Filter
-                onSearch={onSearch}
                 temperamentList={temperamentList}
                 originList={originList}
                 filters={filters}

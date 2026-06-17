@@ -1,4 +1,5 @@
 export const FILTER_INITIAL_STATE = {
+    search: "",
     temperaments: [],
     childFriendly: "any",
     dogFriendly: "any",

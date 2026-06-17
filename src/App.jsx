@@ -48,13 +48,6 @@ function App() {
         ),
     ].sort();
 
-    function handleSearch(searchValue) {
-        appDispatch({
-            type: APP_ACTION_TYPES.INPUT_SEARCH,
-            input: searchValue,
-        });
-    }
-
     function handleToggleFavorite(breedId) {
         const favorite = appState.breeds.find((breed) => breed.id === breedId);
         appDispatch({
@@ -95,8 +88,8 @@ function App() {
         appDispatch({ type: APP_ACTION_TYPES.RESET_FILTER });
     }
 
-    function handleFilterBreeds() {
-        appDispatch({ type: APP_ACTION_TYPES.FILTER, payload: filterState });
+    function handleFilterBreeds(nextFilters) {
+        appDispatch({ type: APP_ACTION_TYPES.FILTER, payload: nextFilters });
     }
 
     useEffect(() => {
@@ -168,7 +161,6 @@ function App() {
                     originList={originList}
                     filters={filterState}
                     onToggleFavorite={handleToggleFavorite}
-                    onSearch={handleSearch}
                     onOpenDetails={handleOpenDetails}
                     onChangeFilter={handleChangeFilter}
                     onResetFilter={handleResetFilter}

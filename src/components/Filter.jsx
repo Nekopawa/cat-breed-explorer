@@ -2,7 +2,6 @@ import { useState } from "react";
 import "../styles/filter.css";
 
 export default function Filter({
-    onSearch,
     temperamentList,
     originList,
     filters,
@@ -15,10 +14,6 @@ export default function Filter({
 
     const minWeight = filters.weight[0];
     const maxWeight = filters.weight[1];
-
-    function handleChangeInput(event) {
-        onSearch(event.target.value);
-    }
 
     function handleToggleTemperament(temperament) {
         const isSelected = filters.temperaments?.includes(temperament);
@@ -52,6 +47,13 @@ export default function Filter({
         onChangeFilter("weight", [minWeight, Math.max(newMax, minWeight)]);
     }
 
+    function handleSearchChange(event) {
+        const searchValue = event.target.value;
+        const nextFilters = { ...filters, search: searchValue };
+        onChangeFilter("search", searchValue);
+        onFilter(nextFilters);
+    }
+
     return (
         <section id="filter__bar">
             <div id="filter__input-wrapper">
@@ -59,7 +61,8 @@ export default function Filter({
                     id="filter__input"
                     type="text"
                     placeholder="Search cat breeds..."
-                    onChange={handleChangeInput}
+                    value={filters.search}
+                    onChange={handleSearchChange}
                 />
             </div>
 
@@ -255,7 +258,10 @@ export default function Filter({
                         </div>
                     </div>
 
-                    <button id="filter__apply-button" onClick={onFilter}>
+                    <button
+                        id="filter__apply-button"
+                        onClick={() => onFilter(filters)}
+                    >
                         Apply filters
                     </button>
                 </section>
