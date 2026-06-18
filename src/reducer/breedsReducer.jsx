@@ -7,6 +7,7 @@ export const INITIAL_STATE = {
     favorites: [],
     selectedBreed: null,
     previousPage: null,
+    sort: "name_asc",
 };
 
 export const APP_ACTION_TYPES = {
@@ -19,6 +20,7 @@ export const APP_ACTION_TYPES = {
     CLOSE_DETAILS: "CLOSE_DETAILS",
     FILTER: "FILTER",
     RESET_FILTER: "RESET_FILTER",
+    CHANGE_SORT: "CHANGE_SORT",
 };
 
 export function init(initialState) {
@@ -115,6 +117,12 @@ export function reducer(state, action) {
                 filteredBreeds: state.breeds,
             };
         }
+        case APP_ACTION_TYPES.CHANGE_SORT: {
+            const sortOption = action.option;
+            const sortedBreeds = sortBreeds(state.filteredBreeds, sortOption);
+
+            return { ...state, sort: sortOption, filteredBreeds: sortedBreeds };
+        }
         default: {
             return state;
         }
@@ -199,5 +207,63 @@ function getMinValue(option) {
 
         default:
             return 1;
+    }
+}
+
+function sortBreeds(filteredBreeds, option) {
+    switch (option) {
+        case "name_asc": {
+            return filteredBreeds.sort((a, b) => a.name.localeCompare(b.name));
+        }
+        case "name_desc": {
+            return filteredBreeds.sort((a, b) => b.name.localeCompare(a.name));
+        }
+        case "weight_asc": {
+            return filteredBreeds.sort((a, b) => {
+                const minWeightA = Number(a.weight.split("-")[0].trim());
+                const maxWeightA = Number(a.weight.split("-")[1].trim());
+                const minWeightB = Number(b.weight.split("-")[0].trim());
+                const maxWeightB = Number(b.weight.split("-")[1].trim());
+
+                return minWeightA - minWeightB || maxWeightA - maxWeightB;
+            });
+        }
+        case "weight_desc": {
+            return filteredBreeds.sort((a, b) => {
+                const minWeightA = Number(a.weight.split("-")[0].trim());
+                const maxWeightA = Number(a.weight.split("-")[1].trim());
+                const minWeightB = Number(b.weight.split("-")[0].trim());
+                const maxWeightB = Number(b.weight.split("-")[1].trim());
+
+                return maxWeightB - maxWeightA || minWeightB - minWeightA;
+            });
+        }
+        case "life_span_asc": {
+            return filteredBreeds.sort((a, b) => {
+                const minLifeSpanA = Number(a.lifeSpan.split("-")[0].trim());
+                const maxLifeSpanA = Number(a.lifeSpan.split("-")[1].trim());
+                const minLifeSpanB = Number(b.lifeSpan.split("-")[0].trim());
+                const maxLifeSpanB = Number(b.lifeSpan.split("-")[1].trim());
+
+                return (
+                    minLifeSpanA - minLifeSpanB || maxLifeSpanA - maxLifeSpanB
+                );
+            });
+        }
+        case "life_span_desc": {
+            return filteredBreeds.sort((a, b) => {
+                const minLifeSpanA = Number(a.lifeSpan.split("-")[0].trim());
+                const maxLifeSpanA = Number(a.lifeSpan.split("-")[1].trim());
+                const minLifeSpanB = Number(b.lifeSpan.split("-")[0].trim());
+                const maxLifeSpanB = Number(b.lifeSpan.split("-")[1].trim());
+
+                return (
+                    maxLifeSpanB - maxLifeSpanA || minLifeSpanB - minLifeSpanA
+                );
+            });
+        }
+        default: {
+            return filteredBreeds.sort((a, b) => a.name.localeCompare(b.name));
+        }
     }
 }

@@ -10,11 +10,13 @@ export default function BreedList({
     temperamentList,
     originList,
     filters,
+    sortOption,
     onToggleFavorite,
     onOpenDetails,
     onChangeFilter,
     onResetFilter,
     onFilter,
+    onChangeSort,
 }) {
     return (
         <main id="breed-list">
@@ -22,9 +24,11 @@ export default function BreedList({
                 temperamentList={temperamentList}
                 originList={originList}
                 filters={filters}
+                sortOption={sortOption}
                 onChangeFilter={onChangeFilter}
                 onResetFilter={onResetFilter}
                 onFilter={onFilter}
+                onChangeSort={onChangeSort}
             />
 
             <p id="list__info">

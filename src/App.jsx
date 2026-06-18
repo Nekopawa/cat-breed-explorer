@@ -92,6 +92,10 @@ function App() {
         appDispatch({ type: APP_ACTION_TYPES.FILTER, payload: nextFilters });
     }
 
+    function handleChangeSort(option) {
+        appDispatch({ type: APP_ACTION_TYPES.CHANGE_SORT, option: option });
+    }
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -160,11 +164,13 @@ function App() {
                     temperamentList={temperamentList}
                     originList={originList}
                     filters={filterState}
+                    sortOption={appState.sort}
                     onToggleFavorite={handleToggleFavorite}
                     onOpenDetails={handleOpenDetails}
                     onChangeFilter={handleChangeFilter}
                     onResetFilter={handleResetFilter}
                     onFilter={handleFilterBreeds}
+                    onChangeSort={handleChangeSort}
                 />
             ) : appState.selectedPage === "favorites" ? (
                 <FavoritesList

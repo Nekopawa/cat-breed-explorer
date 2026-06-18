@@ -5,12 +5,39 @@ export default function Filter({
     temperamentList,
     originList,
     filters,
+    sortOption,
     onChangeFilter,
     onResetFilter,
     onFilter,
+    onChangeSort,
 }) {
     const [filterIsOpen, setFilterIsOpen] = useState(false);
     const [sortIsOpen, setSortIsOpen] = useState(false);
+
+    const sortOptions = [
+        { id: "sort_name_asc", value: "name_asc", label: "Name (A - Z)" },
+        { id: "sort_name_desc", value: "name_desc", label: "Name (Z - A)" },
+        {
+            id: "sort_weight_asc",
+            value: "weight_asc",
+            label: "Weight (Low to High)",
+        },
+        {
+            id: "sort_weight_desc",
+            value: "weight_desc",
+            label: "Weight (High to Low)",
+        },
+        {
+            id: "sort_life_span_asc",
+            value: "life_span_asc",
+            label: "Life span (Low to High)",
+        },
+        {
+            id: "sort_life_span_desc",
+            value: "life_span_desc",
+            label: "Life span (High to Low)",
+        },
+    ];
 
     const minWeight = filters.weight[0];
     const maxWeight = filters.weight[1];
@@ -291,108 +318,43 @@ export default function Filter({
                     </div>
 
                     <ul id="sort__container">
-                        <li>
-                            <label
-                                className="sort__item"
-                                htmlFor="sort_name_asc"
-                            >
-                                <picture>
-                                    <img src="./icons/sort_name.svg"></img>
-                                </picture>
-                                <p>Name (A - Z)</p>
-                                <input
-                                    type="radio"
-                                    name="sort"
-                                    id="sort_name_asc"
-                                    value="name_asc"
-                                ></input>
-                            </label>
-                        </li>
-                        <li>
-                            <label
-                                className="sort__item"
-                                htmlFor="sort_name_desc"
-                            >
-                                <picture>
-                                    <img src="./icons/sort_name.svg"></img>
-                                </picture>
-                                <p>Name (Z - A)</p>
-                                <input
-                                    type="radio"
-                                    name="sort"
-                                    id="sort_name_desc"
-                                    value="name_desc"
-                                ></input>
-                            </label>
-                        </li>
-                        <li>
-                            <label
-                                className="sort__item"
-                                htmlFor="sort_weight_asc"
-                            >
-                                <picture>
-                                    <img src="./icons/weight.svg"></img>
-                                </picture>
-                                <p>Weight (Low to High)</p>
-                                <input
-                                    type="radio"
-                                    name="sort"
-                                    id="sort_weight_asc"
-                                    value="weight_asc"
-                                ></input>
-                            </label>
-                        </li>
-                        <li>
-                            <label
-                                className="sort__item"
-                                htmlFor="sort_weight_desc"
-                            >
-                                <picture>
-                                    <img src="./icons/weight.svg"></img>
-                                </picture>
-                                <p>Weight (High to Low)</p>
-                                <input
-                                    type="radio"
-                                    name="sort"
-                                    id="sort_weight_desc"
-                                    value="weight_desc"
-                                ></input>
-                            </label>
-                        </li>
-                        <li>
-                            <label
-                                className="sort__item"
-                                htmlFor="sort_life-span_asc"
-                            >
-                                <picture>
-                                    <img src="./icons/calendar.svg"></img>
-                                </picture>
-                                <p>Life Span (Low to High)</p>
-                                <input
-                                    type="radio"
-                                    name="sort"
-                                    id="sort_life-span_asc"
-                                    value="life_span_asc"
-                                ></input>
-                            </label>
-                        </li>
-                        <li>
-                            <label
-                                className="sort__item"
-                                htmlFor="sort_life-span_desc"
-                            >
-                                <picture>
-                                    <img src="./icons/calendar.svg"></img>
-                                </picture>
-                                <p>Life Span (High to Low)</p>
-                                <input
-                                    type="radio"
-                                    name="sort"
-                                    id="sort_life-span_desc"
-                                    value="life_span_desc"
-                                ></input>
-                            </label>
-                        </li>
+                        {sortOptions.map((option) => {
+                            return (
+                                <li key={option.id}>
+                                    <label
+                                        className="sort__item"
+                                        htmlFor={option.id}
+                                    >
+                                        <picture>
+                                            {option.id.includes("name") ? (
+                                                <img src="./icons/sort_name.svg"></img>
+                                            ) : option.id.includes("weight") ? (
+                                                <img src="./icons/weight.svg"></img>
+                                            ) : (
+                                                option.id.includes(
+                                                    "life_span",
+                                                ) && (
+                                                    <img src="./icons/calendar.svg"></img>
+                                                )
+                                            )}
+                                        </picture>
+                                        <p>{option.label}</p>
+                                        <input
+                                            type="radio"
+                                            name="sort"
+                                            id={option.id}
+                                            value={option.value}
+                                            checked={
+                                                option.value === sortOption
+                                            }
+                                            onChange={(event) =>
+                                                onChangeSort(event.target.value)
+                                            }
+                                        ></input>
+                                    </label>
+                                </li>
+                            );
+                        })}
                     </ul>
                 </section>
             )}
