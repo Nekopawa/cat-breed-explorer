@@ -85,15 +85,17 @@ function App() {
 
     function handleResetFilter() {
         filterDispatch({ type: FILTER_ACTION_TYPES.RESET_FILTER });
-        appDispatch({ type: APP_ACTION_TYPES.RESET_FILTER });
-    }
-
-    function handleFilterBreeds(nextFilters) {
-        appDispatch({ type: APP_ACTION_TYPES.FILTER, payload: nextFilters });
     }
 
     function handleChangeSort(option) {
         appDispatch({ type: APP_ACTION_TYPES.CHANGE_SORT, option: option });
+    }
+
+    function handleRemoveFilter(key, temperament = null) {
+        filterDispatch({
+            type: FILTER_ACTION_TYPES.REMOVE_FILTER,
+            payload: { key, temperament },
+        });
     }
 
     useEffect(() => {
@@ -151,6 +153,11 @@ function App() {
         window.scrollTo(0, 0);
     }, [appState.selectedPage]);
 
+    useEffect(() => {
+        appDispatch({ type: APP_ACTION_TYPES.FILTER, payload: filterState });
+        //after loading the breeds for the first time, apply any possible filters selected while loading
+    }, [filterState, appState.breeds]);
+
     return (
         <>
             <Header page={appState.selectedPage} />
@@ -169,8 +176,8 @@ function App() {
                     onOpenDetails={handleOpenDetails}
                     onChangeFilter={handleChangeFilter}
                     onResetFilter={handleResetFilter}
-                    onFilter={handleFilterBreeds}
                     onChangeSort={handleChangeSort}
+                    onRemoveFilter={handleRemoveFilter}
                 />
             ) : appState.selectedPage === "favorites" ? (
                 <FavoritesList

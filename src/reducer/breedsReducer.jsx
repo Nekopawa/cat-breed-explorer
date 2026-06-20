@@ -19,7 +19,6 @@ export const APP_ACTION_TYPES = {
     OPEN_DETAILS: "OPEN_DETAILS",
     CLOSE_DETAILS: "CLOSE_DETAILS",
     FILTER: "FILTER",
-    RESET_FILTER: "RESET_FILTER",
     CHANGE_SORT: "CHANGE_SORT",
 };
 
@@ -106,15 +105,11 @@ export function reducer(state, action) {
             };
         }
         case APP_ACTION_TYPES.FILTER: {
+            const newFilteredBreeds = filterBreeds(state, action);
+
             return {
                 ...state,
-                filteredBreeds: filterBreeds(state, action),
-            };
-        }
-        case APP_ACTION_TYPES.RESET_FILTER: {
-            return {
-                ...state,
-                filteredBreeds: state.breeds,
+                filteredBreeds: sortBreeds(newFilteredBreeds, state.sort),
             };
         }
         case APP_ACTION_TYPES.CHANGE_SORT: {

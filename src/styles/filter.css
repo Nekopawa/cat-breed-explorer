@@ -257,16 +257,6 @@
     pointer-events: auto;
 }
 
-#filter__apply-button {
-    height: 40px;
-    width: 100%;
-    background-color: var(--primary-accent);
-    color: var(--lighter-accent);
-    border: 0;
-    border-radius: 10px;
-    font-size: 1rem;
-}
-
 #sort__header {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -294,4 +284,30 @@
 .sort__item input[type="radio"] {
     justify-items: end;
     height: 20px;
+}
+
+#selected-filters__container ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: start;
+    padding: 0 25px;
+    gap: 10px;
+    list-style: none;
+    text-transform: capitalize;
+    font-size: 14px;
+}
+
+#selected-filters__container ul li {
+    background-color: var(--light-purple-background);
+    border-radius: 10px;
+    height: 40px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.delete_filter_button {
+    background-color: inherit;
+    border: 0;
 }

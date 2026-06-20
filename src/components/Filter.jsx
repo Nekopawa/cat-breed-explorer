@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../styles/filter.css";
+import { FILTER_INITIAL_STATE } from "../reducer/filterReducer";
 
 export default function Filter({
     temperamentList,
@@ -8,8 +9,8 @@ export default function Filter({
     sortOption,
     onChangeFilter,
     onResetFilter,
-    onFilter,
     onChangeSort,
+    onRemoveFilter,
 }) {
     const [filterIsOpen, setFilterIsOpen] = useState(false);
     const [sortIsOpen, setSortIsOpen] = useState(false);
@@ -41,6 +42,10 @@ export default function Filter({
 
     const minWeight = filters.weight[0];
     const maxWeight = filters.weight[1];
+
+    //deal with arrays (temperament and weight)
+    const hasActiveFilters =
+        JSON.stringify(filters) !== JSON.stringify(FILTER_INITIAL_STATE);
 
     function handleToggleTemperament(temperament) {
         const isSelected = filters.temperaments?.includes(temperament);
@@ -75,10 +80,33 @@ export default function Filter({
     }
 
     function handleSearchChange(event) {
-        const searchValue = event.target.value;
-        const nextFilters = { ...filters, search: searchValue };
-        onChangeFilter("search", searchValue);
-        onFilter(nextFilters);
+        onChangeFilter("search", event.target.value);
+    }
+
+    function getFilterDescription(key, value) {
+        switch (key) {
+            case "search": {
+                return `Name: ${value}`;
+            }
+            case "childFriendly": {
+                return `Child Friendly: ${value}`;
+            }
+            case "dogFriendly": {
+                return `Dog Friendly: ${value}`;
+            }
+            case "hypoallergenic": {
+                return "Hypoallergenic";
+            }
+            case "origin": {
+                return `Origin: ${value}`;
+            }
+            case "weight": {
+                return `Weight: ${value[0]}kg - ${value[1]}kg`;
+            }
+            default: {
+                return null;
+            }
+        }
     }
 
     return (
@@ -239,7 +267,7 @@ export default function Filter({
                     <div id="options__origin">
                         <h3>Origin</h3>
                         <select
-                            defaultValue=""
+                            value={filters.origin || ""}
                             onChange={(event) =>
                                 onChangeFilter(
                                     "origin",
@@ -293,13 +321,6 @@ export default function Filter({
                             </p>
                         </div>
                     </div>
-
-                    <button
-                        id="filter__apply-button"
-                        onClick={() => onFilter(filters)}
-                    >
-                        Apply filters
-                    </button>
                 </section>
             )}
 
@@ -354,6 +375,68 @@ export default function Filter({
                                     </label>
                                 </li>
                             );
+                        })}
+                    </ul>
+                </section>
+            )}
+
+            {hasActiveFilters && (
+                <section id="selected-filters__container">
+                    <ul>
+                        {Object.entries(filters).map(([key, value]) => {
+                            //deal with arrays (temperament and weight)
+                            const hasChanged =
+                                JSON.stringify(value) !==
+                                JSON.stringify(FILTER_INITIAL_STATE[key]);
+
+                            if (!hasChanged) return null;
+
+                            if (key !== "temperaments") {
+                                return (
+                                    <li key={key}>
+                                        <p>
+                                            {getFilterDescription(key, value)}
+                                        </p>
+                                        <button
+                                            type="button"
+                                            className="delete_filter_button"
+                                            onClick={() => onRemoveFilter(key)}
+                                        >
+                                            <picture>
+                                                <img
+                                                    src="./icons/close_purple.svg"
+                                                    alt={`Delete filter ${key} button`}
+                                                ></img>
+                                            </picture>
+                                        </button>
+                                    </li>
+                                );
+                            }
+
+                            if (key === "temperaments") {
+                                return value.map((temperament) => (
+                                    <li key={temperament}>
+                                        <p>Temperament: {temperament}</p>
+                                        <button
+                                            type="button"
+                                            className="delete_filter_button"
+                                            onClick={() =>
+                                                onRemoveFilter(
+                                                    "temperaments",
+                                                    temperament,
+                                                )
+                                            }
+                                        >
+                                            <picture>
+                                                <img
+                                                    src="./icons/close_purple.svg"
+                                                    alt={`Delete filter ${temperament} button`}
+                                                ></img>
+                                            </picture>
+                                        </button>
+                                    </li>
+                                ));
+                            }
                         })}
                     </ul>
                 </section>

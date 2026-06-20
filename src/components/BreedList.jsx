@@ -15,8 +15,8 @@ export default function BreedList({
     onOpenDetails,
     onChangeFilter,
     onResetFilter,
-    onFilter,
     onChangeSort,
+    onRemoveFilter,
 }) {
     return (
         <main id="breed-list">
@@ -27,8 +27,8 @@ export default function BreedList({
                 sortOption={sortOption}
                 onChangeFilter={onChangeFilter}
                 onResetFilter={onResetFilter}
-                onFilter={onFilter}
                 onChangeSort={onChangeSort}
+                onRemoveFilter={onRemoveFilter}
             />
 
             <p id="list__info">
