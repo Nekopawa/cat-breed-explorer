@@ -46,6 +46,7 @@ export default function Filter({
     //deal with arrays (temperament and weight)
     const hasActiveFilters =
         JSON.stringify(filters) !== JSON.stringify(FILTER_INITIAL_STATE);
+    const hasActiveSort = sortOption !== "name_asc";
 
     function handleToggleTemperament(temperament) {
         const isSelected = filters.temperaments?.includes(temperament);
@@ -380,7 +381,7 @@ export default function Filter({
                 </section>
             )}
 
-            {hasActiveFilters && (
+            {(hasActiveFilters || hasActiveSort) && (
                 <section id="selected-filters__container">
                     <ul>
                         {Object.entries(filters).map(([key, value]) => {
@@ -438,6 +439,26 @@ export default function Filter({
                                 ));
                             }
                         })}
+
+                        {sortOption !== "name_asc" && (
+                            <li key="sort">
+                                <p>
+                                    Sort:{" "}
+                                    {
+                                        sortOptions.find(
+                                            (option) =>
+                                                option.value === sortOption,
+                                        ).label
+                                    }
+                                </p>
+                                <picture>
+                                    <img
+                                        src="./icons/close_purple.svg"
+                                        alt={`Delete selected sort button`}
+                                    ></img>
+                                </picture>
+                            </li>
+                        )}
                     </ul>
                 </section>
             )}
