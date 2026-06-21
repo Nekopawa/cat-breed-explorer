@@ -310,4 +310,7 @@
 .delete_filter_button {
     background-color: inherit;
     border: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
