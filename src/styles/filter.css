@@ -65,7 +65,7 @@
 
 #filter__options,
 #sort__options {
-    width: 100%;
+    width: 90%;
     padding: 25px;
     background-color: white;
     border-radius: 20px;
@@ -286,6 +286,10 @@
     height: 20px;
 }
 
+#selected-filters__container {
+    margin-bottom: 20px;
+}
+
 #selected-filters__container ul {
     display: flex;
     flex-flow: row wrap;
@@ -313,4 +317,35 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+@media screen and (min-width: 850px) {
+    #filter__input-wrapper {
+        width: 400px;
+    }
+
+    .filter__button {
+        width: 180px;
+    }
+
+    #filter__options,
+    #sort__options {
+        width: 70%;
+    }
+
+    #selected-filters__container {
+        width: 70%;
+        margin-inline: auto;
+    }
+}
+
+@media screen and (min-width: 1500px) {
+    #filter__bar {
+        align-items: start;
+    }
+
+    #filter__options,
+    #sort__options {
+        width: 40%;
+    }
 }

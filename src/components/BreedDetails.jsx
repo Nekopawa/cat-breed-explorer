@@ -47,19 +47,24 @@ export default function BreedDetails({
                 <img src={`./breeds/${id}.webp`} alt={`${name} photo`}></img>
             </picture>
 
-            <button onClick={onCloseDetails}>
-                <picture id="details__back-button">
+            <button id="details__back-button" onClick={onCloseDetails}>
+                <picture>
                     <img src="./icons/arrow_back.svg"></img>
                 </picture>
             </button>
 
-            <picture id="details__favorite-icon">
-                {isFavorite ? (
-                    <img src="./icons/favorite_purple.svg"></img>
-                ) : (
-                    <img src="./icons/favorite_grey.svg"></img>
-                )}
-            </picture>
+            <button
+                id="details__favorite-icon"
+                onClick={() => onToggleFavorite(id)}
+            >
+                <picture>
+                    {isFavorite ? (
+                        <img src="./icons/favorite_purple.svg"></img>
+                    ) : (
+                        <img src="./icons/favorite_grey.svg"></img>
+                    )}
+                </picture>
+            </button>
 
             <section id="details__card">
                 <h2>{name}</h2>

@@ -1,6 +1,7 @@
 #favorites-list {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 #favorites-list__container {
@@ -49,4 +50,41 @@
 
 #favorites-list__empty img {
     height: 30px;
+}
+
+@media screen and (min-width: 850px) {
+    #favorites-list__container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+        justify-items: center;
+        padding: 20px;
+    }
+
+    #favorites-list__empty {
+        width: 60%;
+        margin-top: 15px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    #favorites-list__empty {
+        width: 40%;
+    }
+}
+
+@media screen and (min-width: 1500px) {
+    #favorites-list__container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    #favorites-list__empty {
+        width: 30%;
+    }
+}
+
+@media screen and (min-width: 2500px) {
+    #favorites-list__container {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }

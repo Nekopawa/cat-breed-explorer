@@ -11,6 +11,7 @@
     left: 0;
     background-color: white;
     border: 1px solid var(--border);
+    z-index: 1;
 }
 
 .navbar__button {

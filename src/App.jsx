@@ -3,19 +3,21 @@ import "./App.css";
 import BreedList from "./components/BreedList";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
+import Filter from "./components/Filter";
+import FavoritesList from "./components/FavoritesList";
+import BreedDetails from "./components/BreedDetails";
 import {
     APP_ACTION_TYPES,
     init,
     INITIAL_STATE,
     reducer,
 } from "./reducer/breedsReducer";
-import FavoritesList from "./components/FavoritesList";
-import BreedDetails from "./components/BreedDetails";
 import {
     FILTER_ACTION_TYPES,
     FILTER_INITIAL_STATE,
     filterReducer,
 } from "./reducer/filterReducer";
+import { useMediaQuery } from "./util/mediaQuery";
 
 function App() {
     const [appState, appDispatch] = useReducer(reducer, INITIAL_STATE, init);
@@ -47,6 +49,15 @@ function App() {
             ) ?? [],
         ),
     ].sort();
+
+    const isWideScreen = useMediaQuery("(min-width: 1500px)");
+    const isExplore = appState.selectedPage === "explore";
+    const isFavorites = appState.selectedPage === "favorites";
+    const isDetails = appState.selectedPage === "details";
+    const displayedPage =
+        isWideScreen && isDetails
+            ? appState.previousPage
+            : appState.selectedPage;
 
     function handleToggleFavorite(breedId) {
         const favorite = appState.breeds.find((breed) => breed.id === breedId);
@@ -150,8 +161,8 @@ function App() {
 
     useEffect(() => {
         //puts the scroll at the top of the page
-        window.scrollTo(0, 0);
-    }, [appState.selectedPage]);
+        if (!isWideScreen) window.scrollTo(0, 0);
+    }, [appState.selectedPage, isWideScreen]);
 
     useEffect(() => {
         appDispatch({ type: APP_ACTION_TYPES.FILTER, payload: filterState });
@@ -160,46 +171,114 @@ function App() {
 
     return (
         <>
-            <Header page={appState.selectedPage} />
+            <Header page={displayedPage} isWideScreen={isWideScreen} />
 
-            {appState.selectedPage === "explore" ? (
-                <BreedList
-                    breeds={appState.filteredBreeds}
-                    loading={appState.loading}
-                    error={appState.error}
-                    favorites={appState.favorites}
+            {(isExplore ||
+                (isWideScreen &&
+                    appState.previousPage === "explore" &&
+                    !isFavorites)) && (
+                <Filter
                     temperamentList={temperamentList}
                     originList={originList}
                     filters={filterState}
                     sortOption={appState.sort}
-                    onToggleFavorite={handleToggleFavorite}
-                    onOpenDetails={handleOpenDetails}
                     onChangeFilter={handleChangeFilter}
                     onResetFilter={handleResetFilter}
                     onChangeSort={handleChangeSort}
                     onRemoveFilter={handleRemoveFilter}
                 />
-            ) : appState.selectedPage === "favorites" ? (
-                <FavoritesList
-                    favorites={appState.favorites}
-                    onToggleFavorite={handleToggleFavorite}
-                    onOpenDetails={handleOpenDetails}
-                />
-            ) : appState.selectedPage === "details" ? (
-                <BreedDetails
-                    breed={appState.selectedBreed}
-                    favorites={appState.favorites}
-                    onToggleFavorite={handleToggleFavorite}
-                    onCloseDetails={handleCloseDetails}
-                />
-            ) : (
-                <p>More...</p>
             )}
 
-            {appState.selectedPage !== "details" && (
+            {displayedPage === "explore" ? (
+                <p id="breeds_displayed__amount">
+                    <span>{appState.filteredBreeds.length}</span> breeds found
+                </p>
+            ) : (
+                displayedPage === "favorites" && (
+                    <p id="breeds_displayed__amount">
+                        <span>{appState.favorites.length}</span> favorites
+                    </p>
+                )
+            )}
+
+            <div
+                className={
+                    isDetails && isWideScreen
+                        ? "app__content--split"
+                        : "app__content"
+                }
+            >
+                {/* Small screens*/}
+                {!isWideScreen && isExplore ? (
+                    <BreedList
+                        breeds={appState.filteredBreeds}
+                        loading={appState.loading}
+                        error={appState.error}
+                        favorites={appState.favorites}
+                        onToggleFavorite={handleToggleFavorite}
+                        onOpenDetails={handleOpenDetails}
+                    />
+                ) : !isWideScreen && isFavorites ? (
+                    <FavoritesList
+                        favorites={appState.favorites}
+                        onToggleFavorite={handleToggleFavorite}
+                        onOpenDetails={handleOpenDetails}
+                    />
+                ) : (
+                    !isWideScreen &&
+                    isDetails && (
+                        <BreedDetails
+                            breed={appState.selectedBreed}
+                            favorites={appState.favorites}
+                            onToggleFavorite={handleToggleFavorite}
+                            onCloseDetails={handleCloseDetails}
+                        />
+                    )
+                )}
+
+                {/* Wider screens*/}
+                {isWideScreen && displayedPage === "explore" ? (
+                    <BreedList
+                        breeds={appState.filteredBreeds}
+                        loading={appState.loading}
+                        error={appState.error}
+                        favorites={appState.favorites}
+                        temperamentList={temperamentList}
+                        originList={originList}
+                        filters={filterState}
+                        sortOption={appState.sort}
+                        onToggleFavorite={handleToggleFavorite}
+                        onOpenDetails={handleOpenDetails}
+                        onChangeFilter={handleChangeFilter}
+                        onResetFilter={handleResetFilter}
+                        onChangeSort={handleChangeSort}
+                        onRemoveFilter={handleRemoveFilter}
+                    />
+                ) : (
+                    isWideScreen &&
+                    displayedPage === "favorites" && (
+                        <FavoritesList
+                            favorites={appState.favorites}
+                            onToggleFavorite={handleToggleFavorite}
+                            onOpenDetails={handleOpenDetails}
+                        />
+                    )
+                )}
+
+                {isWideScreen && isDetails && (
+                    <BreedDetails
+                        breed={appState.selectedBreed}
+                        favorites={appState.favorites}
+                        onToggleFavorite={handleToggleFavorite}
+                        onCloseDetails={handleCloseDetails}
+                    />
+                )}
+            </div>
+
+            {(!isDetails || isWideScreen) && (
                 <Navbar
                     onChangePage={handleChangePage}
-                    selectedPage={appState.selectedPage}
+                    selectedPage={displayedPage}
                 />
             )}
         </>

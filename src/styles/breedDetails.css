@@ -1,3 +1,7 @@
+#breed-detail__container {
+    position: relative;
+}
+
 #details__image {
     display: block;
     height: 400px;
@@ -13,12 +17,16 @@
 }
 
 #details__back-button {
+    background-color: inherit;
+    border: 0;
     position: absolute;
     top: 15px;
     left: 15px;
 }
 
 #details__favorite-icon {
+    background-color: inherit;
+    border: 0;
     position: absolute;
     top: 15px;
     right: 15px;
@@ -185,4 +193,56 @@
     border-radius: 10px;
     font-size: 1rem;
     cursor: pointer;
+}
+
+@media screen and (min-width: 700px) {
+    #breed-detail__container {
+        width: 70%;
+        justify-self: center;
+        margin: 15px 0;
+    }
+
+    #details__image img {
+        border-radius: 10px 10px 0 0;
+        object-fit: contain;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    #breed-detail__container {
+        width: 60%;
+    }
+}
+
+@media screen and (min-width: 1050px) {
+    #breed-detail__container {
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 1500px) {
+    #breed-detail__container {
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+    }
+
+    #details__back-button {
+        top: 35px;
+        left: 35px;
+    }
+
+    #details__favorite-icon {
+        top: 35px;
+        right: 35px;
+    }
+
+    #details__image img {
+        height: 420px;
+        object-fit: cover;
+    }
+
+    #details__card {
+        margin: 0;
+    }
 }

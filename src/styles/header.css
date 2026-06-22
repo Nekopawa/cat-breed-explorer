@@ -3,8 +3,9 @@ header {
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
     align-items: center;
+    gap: 20px;
+    padding-left: 20px;
     background-color: white;
     border-bottom: 1px solid var(--border);
 }
@@ -12,7 +13,7 @@ header {
 #header__title {
     font-size: 1.5rem;
     font-weight: 500;
-    width: 60%;
+    width: auto;
     margin: 16px 0;
 }
 

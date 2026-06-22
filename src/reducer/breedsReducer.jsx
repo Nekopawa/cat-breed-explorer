@@ -6,7 +6,7 @@ export const INITIAL_STATE = {
     selectedPage: "explore",
     favorites: [],
     selectedBreed: null,
-    previousPage: null,
+    previousPage: "explore",
     sort: "name_asc",
 };
 
@@ -91,12 +91,19 @@ export function reducer(state, action) {
             };
         }
         case APP_ACTION_TYPES.OPEN_DETAILS: {
-            return {
-                ...state,
-                previousPage: state.selectedPage,
-                selectedPage: "details",
-                selectedBreed: action.payload,
-            };
+            if (state.selectedPage === "details") {
+                return {
+                    ...state,
+                    selectedBreed: action.payload,
+                };
+            } else {
+                return {
+                    ...state,
+                    previousPage: state.selectedPage,
+                    selectedPage: "details",
+                    selectedBreed: action.payload,
+                };
+            }
         }
         case APP_ACTION_TYPES.CLOSE_DETAILS: {
             return {

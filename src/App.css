@@ -1,0 +1,33 @@
+.app__content--split {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(500px, 1fr);
+    min-height: 100dvh;
+}
+
+#breeds_displayed__amount {
+    margin: 15px;
+}
+
+#breeds_displayed__amount span {
+    color: var(--primary-accent);
+    font-weight: 600;
+}
+
+@media screen and (min-width: 850px) {
+    #breeds_displayed__amount {
+        margin-left: 40px;
+        margin-bottom: 0;
+    }
+}
+
+@media screen and (min-width: 1500px) {
+    .app__content--split {
+        grid-template-columns: minmax(0, 3fr) minmax(500px, 1fr);
+    }
+}
+
+@media screen and (min-width: 2500px) {
+    .app__content--split {
+        grid-template-columns: minmax(0, 4fr) minmax(500px, 1fr);
+    }
+}

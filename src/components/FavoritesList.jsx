@@ -9,10 +9,6 @@ export default function FavoritesList({
 }) {
     return (
         <section id="favorites-list">
-            <p id="favorite-list__info">
-                <span id="list__count">{favorites.length}</span> favorites
-            </p>
-
             {favorites.length === 0 ? (
                 <div id="favorites-list__empty">
                     <picture>
