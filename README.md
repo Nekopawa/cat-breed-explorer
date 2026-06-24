@@ -50,9 +50,9 @@ Users can browse breeds, view detailed information, search, sort, filter, and sa
 ## Installation
 
 ```bash
-git clone https://github.com/Nekopawa/cats-breeds-app.git
+git clone https://github.com/Nekopawa/cat-breed-explorer.git
 
-cd cats-breeds-app
+cd cat-breed-explorer
 
 npm install
 
