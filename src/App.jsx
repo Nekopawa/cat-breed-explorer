@@ -169,6 +169,10 @@ function App() {
         //after loading the breeds for the first time, apply any possible filters selected while loading
     }, [filterState, appState.breeds]);
 
+    useEffect(() => {
+        localStorage.setItem("favorites", JSON.stringify(appState.favorites));
+    }, [appState.favorites]);
+
     return (
         <>
             <div id="header-navbar__container">
