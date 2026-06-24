@@ -3,6 +3,8 @@
 A responsive React application for exploring cat breeds from around the world.
 Users can browse breeds, view detailed information, search, sort, filter, and save their favorite cats.
 
+[See the app in action here](https://nekopawa.github.io/cat-breed-explorer/)
+
 ## Features
 
 - Browse 67 cat breeds
